@@ -10,10 +10,10 @@ spec:
   ports:
   - name: rpc
     port: 26658
-    protocol: UDP
+    protocol: TCP
   - name: p2p-udp
     port: 2121
-    protocol: TCP
+    protocol: UDP
   - name: p2p-tcp
     port: 2121
     protocol: TCP
