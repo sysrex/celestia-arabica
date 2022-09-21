@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: full-node-service
+  namespace: node2
+  labels:
+    run: full-node-service
+spec:
+  type: NodePort
+  ports:
+  - name: rpc
+    port: 26658
+    protocol: TCP
+  - name: p2p-udp
+    port: 2121
+    protocol: UDP
+  - name: p2p-tcp
+    port: 2121
+    protocol: TCP
+  selector:
+    app: full-node

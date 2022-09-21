@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: full-node
+  namespace: node2
+  labels:
+    app: full-node2
+spec:
+  selector:
+    matchLabels:
+      app: full-node
+  template:
+    metadata:
+      labels:
+        app: full-node
+    spec:
+      initContainers:
+        - name: check-full-ready
+          image: alpine/curl:latest
+          args: ["http://bridge-service:26658"]
+      containers:
+        - name: full
+          image: ghcr.io/celestiaorg/celestia-node:sha-2955431
+          ports:
+            - containerPort: 26658
+            - containerPort: 2121
+          args: ["celestia", "full", "start", "--core.ip", "validator-service.app", "--node.store", "/opt",
+                 "--headers.trusted-hash", "C364B5937805342009408F7D44DBBF43C02AE227F968CF14C5001613B18CE419"]
+          env:
+            - name: CELESTIA_CUSTOM
+              value: arabica:C364B5937805342009408F7D44DBBF43C02AE227F968CF14C5001613B18CE419:/ip4/34.77.147.236/tcp/2121/p2p/12D3KooWNpRWxpi1APzV6CnwHvdgNRuTUbMNvg4ta2i1fnqYXR7H
+          volumeMounts:
+            - mountPath: /opt/config.toml
+              name: full-node-config
+              subPath: config.toml
+            - mountPath: /opt/data
+              name: full-node-data
+            - mountPath: /opt/keys/OAZHALLLMV4Q
+              name: full-node-config
+              subPath: OAZHALLLMV4Q
+            - mountPath: /opt/keys/keyring-test/dc99a80a75c7639e154db8bfe323cf6780e1d924.address
+              name: full-node-config
+              subPath: dc99a80a75c7639e154db8bfe323cf6780e1d924.address
+            - mountPath: /opt/keys/keyring-test/my_celes_key.info
+              name: full-node-config
+              subPath: my_celes_key.info
+      volumes:
+        - name: full-node-config
+          configMap:
+            name: full-node-config
+            defaultMode: 0600 #use secrets to mount keys later
+        - name: full-node-data
+          persistentVolumeClaim:
+            claimName: full-node-data-claim
