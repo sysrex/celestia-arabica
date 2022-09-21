@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: node2
+  name: full-node-config
 data:
   config.toml: |
     [Core]
