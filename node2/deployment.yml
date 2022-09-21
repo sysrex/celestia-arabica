@@ -9,6 +9,8 @@ spec:
   selector:
     matchLabels:
       app: full-node
+  serviceName: full-node
+  replicas: 1
   template:
     metadata:
       labels:
