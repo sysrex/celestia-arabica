@@ -16,10 +16,6 @@ spec:
       labels:
         app: full-node
     spec:
-      initContainers:
-        - name: check-full-ready
-          image: alpine/curl:latest
-          args: ["http://marsellesa.celestia-devops.dev:26658"]
       containers:
         - name: full
           image: sysrex/bridge1
