@@ -6,7 +6,7 @@ metadata:
   labels:
     run: full-node-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
   - name: rpc
     port: 26658
