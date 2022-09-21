@@ -22,28 +22,29 @@ spec:
           args: ["http://marsellesa.celestia-devops.dev:26658"]
       containers:
         - name: full
-          image: ghcr.io/celestiaorg/celestia-node:sha-2955431
+          image: sysrex/bridge1
           ports:
-            - containerPort: 26658
             - containerPort: 2121
-          args: ["celestia", "full", "start", "--core.ip", "validator-service.app", "--node.store", "/opt",
+            - containerPort: 6000
+            - containerPort: 26658
+          args: ["celestia", "full", "start", "--node.store", "/root/.celestia-full",
                  "--headers.trusted-hash", "C364B5937805342009408F7D44DBBF43C02AE227F968CF14C5001613B18CE419"]
           env:
             - name: CELESTIA_CUSTOM
               value: arabica:C364B5937805342009408F7D44DBBF43C02AE227F968CF14C5001613B18CE419:/ip4/34.77.147.236/tcp/2121/p2p/12D3KooWNpRWxpi1APzV6CnwHvdgNRuTUbMNvg4ta2i1fnqYXR7H
           volumeMounts:
-            - mountPath: /opt/config.toml
+            - mountPath: /root/.celestia-full/config.toml
               name: full-node-config
               subPath: config.toml
-            - mountPath: /opt/data
+            - mountPath: /root/.celestia-full/data
               name: full-node-data
-            - mountPath: /opt/keys/OAZHALLLMV4Q
+            - mountPath: /root/.celestia-full/keys/OAZHALLLMV4Q
               name: full-node-config
               subPath: OAZHALLLMV4Q
-            - mountPath: /opt/keys/keyring-test/dc99a80a75c7639e154db8bfe323cf6780e1d924.address
+            - mountPath: /root/.celestia-full/keys/keyring-test/5a846039873bde135ea708fd6355e832a09a12e9.address
               name: full-node-config
-              subPath: dc99a80a75c7639e154db8bfe323cf6780e1d924.address
-            - mountPath: /opt/keys/keyring-test/my_celes_key.info
+              subPath: 5a846039873bde135ea708fd6355e832a09a12e9.address
+            - mountPath: /root/.celestia-full/keys/keyring-test/my_celes_key.info
               name: full-node-config
               subPath: my_celes_key.info
       volumes:
